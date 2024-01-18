@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록</title>
+</head>
+<body>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>작성자</th>
+            <th>댓글내용</th>
+            <th>작성일</th>
+            <th>좋아요</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "comment: ${comment}">
+            <td th:text="${comment.authorDisplayName}"></td>
+            <td th:text="${comment.textOriginal}"></td>
+            <td th:text="${comment.publishedAt}"></td>
+            <td th:text="${comment.likeCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
