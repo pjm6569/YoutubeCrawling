@@ -28,9 +28,23 @@ public class YouTubeService {
     private static final String APPLICATION_NAME = "API code samples";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    public String getVideoId(String videoUrl) {
+    public static String getVideoId(String videoUrl) {
         // 동영상 URL에서 동영상 ID 추출
-        return videoUrl.substring(videoUrl.indexOf("=") + 1);
+        String videoId = "";
+
+        // 쇼츠 영상인 경우
+        if (videoUrl.contains("/shorts/")) {
+            int index = videoUrl.indexOf("/shorts/") + "/shorts/".length();
+            videoId = videoUrl.substring(index);
+        } else {
+            // 일반 영상인 경우
+            int index = videoUrl.indexOf("=");
+            if (index != -1) {
+                videoId = videoUrl.substring(index + 1);
+            }
+        }
+
+        return videoId;
     }
 
     public static YouTube getService() throws GeneralSecurityException, IOException {
@@ -70,6 +84,8 @@ public class YouTubeService {
                 String authorDisplayName = topLevelComment.getSnippet().getAuthorDisplayName();
                 String textOriginal = topLevelComment.getSnippet().getTextOriginal();
                 String publishedAt = topLevelComment.getSnippet().getPublishedAt().toString();
+                publishedAt = publishedAt.replace('T', ' ');
+                publishedAt = publishedAt.substring(0, publishedAt.length() - 5);
                 long likeCount = topLevelComment.getSnippet().getLikeCount();
 
                 CommentInfo commentInfo = new CommentInfo(authorProfileImageUrl, authorDisplayName, textOriginal, publishedAt, likeCount);

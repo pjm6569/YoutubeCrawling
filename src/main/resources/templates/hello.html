@@ -1,103 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>댓글 목록</title>
+    <style>
+        @font-face {
+            font-family: 'Giants-Bold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        #wrapper {
+            height: auto;
+            min-height: 100%;
+            padding-bottom: 40px;
+        }
+
+        footer {
+            margin-top: 20px;
+            height: 40px;
+            position: relative;
+            transform: translateY(-100%);
+            text-align: center;
+            font-size: 0.8em;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        #logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        #login-signup {
+            display: flex;
+            align-items: center;
+        }
+
+        #login, #signup {
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 15px;
+        }
+
+        #login {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #signup {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+        tr.colored:nth-child(even){
+            background-color:#f4f4f4;
+            color:#000000;
+        }
+
+        tr.colored:nth-child(odd){
+            background-color:#FFFFFF;
+            color:#000000;
+        }
+
+    </style>
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // 초기 테이블 상태 저장
-            var originalRows = $('#commentTable tbody tr').clone();
-
-            $('#sort').change(function () {
-                var selectedSort = $(this).val();
-
-                if (selectedSort === 'basic') {
-                    // '정렬기준' 선택 시 초기 상태로 복원
-                    resetTable();
-                } else {
-                    // 다른 기준 선택 시 해당 기준으로 테이블 정렬
-                    sortTable(selectedSort);
-                }
-            });
-
-            function resetTable() {
-                // 초기 테이블 상태로 복원
-                $('#commentTable tbody').empty().append(originalRows.clone());
-            }
-
-            function sortTable(selectedSort) {
-                var rows = $('#commentTable tbody tr').get();
-
-                rows.sort(function (a, b) {
-                    var keyA = $(a).children('td').eq(getColumnIndex(selectedSort)).text();
-                    var keyB = $(b).children('td').eq(getColumnIndex(selectedSort)).text();
-
-                    // 선택된 기준에 따른 사용자 정의 정렬 로직
-                    if (selectedSort === 'time') {
-                        return new Date(keyB) - new Date(keyA);
-                    } else if (selectedSort === 'likeCount') {
-                        return parseInt(keyB, 10) - parseInt(keyA, 10);
-                    } else {
-                        return 0; // 정렬 없음을 기본값으로 설정
-                    }
-                });
-
-                // 테이블 내의 행들을 정렬된 순서로 다시 추가
-                $.each(rows, function (index, row) {
-                    $('#commentTable tbody').append(row);
-                });
-            }
-
-            function getColumnIndex(selectedSort) {
-                var columnIndex = 1; // 기본적으로 첫 번째 열로 설정
-
-                if (selectedSort === 'time') {
-                    columnIndex = 2; // 날짜를 포함한 열의 인덱스
-                } else if (selectedSort === 'likeCount') {
-                    columnIndex = 3; // 좋아요 수를 포함한 열의 인덱스
-                }
-
-                return columnIndex;
-            }
-        });
-    </script>
+    <script type="text/javascript" src="/js/script.js" defer></script>
 </head>
+
 <body>
-    <h1 align="center"> 댓글 목록 </h1>
-    <select id="sort" name="sort">
-        <option value = "basic">정렬기준</option>
-        <option value="time">최신순</option>
-        <option value="likeCount">좋아요</option>
-    </select>
-    <div class="container" id = "commentTable">
-        <table style = "table-layout: auto; width: 100%; table-layout: fixed;">
+<div id="wrapper">
+    <nav style="font-family: 'Giants-Bold', sans-serif;">
+        <a href="/" id="logo">HOME</a>
+<!--        <div id="login-signup">-->
+<!--            <a id="login" href="#">로그인</a>-->
+<!--            <a id="signup" href="#">회원가입</a>-->
+<!--        </div>-->
+    </nav>
+    <p style="margin: 20px; padding: 10px; font-family: 'Giants-Bold', sans-serif; background-color:#d7e4bc; font-size:24pt" align="center">댓글 목록</p>
+
+    <div class="container" id="commentTable" style="width: 80%; margin:0 auto;">
+        <select id="sort" name="sort" style="margin:10px">
+            <option value="basic">정렬기준</option>
+            <option value="time">최신순</option>
+            <option value="likeCount">좋아요</option>
+        </select>
+
+        <table style="table-layout: auto; table-layout: fixed;">
             <colgroup>
-                <col width="12%">
+                <col width="15%">
                 <col width="65%">
-                <col width="18%">
+                <col width="15%">
                 <col width="5%">
             </colgroup>
             <thead>
-                <tr>
-                    <th>작성자</th>
-                    <th>댓글내용</th>
-                    <th>작성일</th>
-                    <th>좋아요</th>
-                </tr>
+            <tr>
+                <th>작성자</th>
+                <th>댓글내용</th>
+                <th>작성일</th>
+                <th>좋아요</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="comment : ${comment}">
-                    <td>
-                        <img th:src="${comment.authorProfileImageUrl}"/>
-                        <span th:text="${comment.authorDisplayName}"></span>
-                    </td>
-                    <td th:text="${comment.textOriginal}"></td>
-                    <td align="center" th:text="${comment.publishedAt}"></td>
-                    <td align="center" th:text="${comment.likeCount}"></td>
-                </tr>
+            <tr class="colored" th:each="comment : ${comment}">
+                <td>
+                    <img th:src="${comment.authorProfileImageUrl}" />
+                    <span th:text="${comment.authorDisplayName}"></span>
+                </td>
+                <td th:text="${comment.textOriginal}"></td>
+                <td align="center" th:text="${comment.publishedAt}"></td>
+                <td align="center" th:text="${comment.likeCount}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
+</div>
+<footer style="font-family: 'Giants-Bold', sans-serif;">
+    <p>&copy; 2024 유튜브 댓글 긁어오기 사이트</p>
+</footer>
 </body>
+
 </html>

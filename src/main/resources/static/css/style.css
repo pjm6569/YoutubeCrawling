@@ -1,0 +1,191 @@
+@font-face {
+    font-family: 'Giants-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Giants-Bold', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+#wrapper {
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 0;
+}
+
+footer {
+    height: 40px;
+    position: relative;
+    transform: translateY(-100%);
+    text-align: center;
+    font-size: 0.8em;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#login-signup {
+    display: flex;
+    align-items: center;
+}
+
+#login, #signup {
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+#login {
+    background-color: #333;
+    color: #fff;
+}
+
+#signup {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.banners {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+}
+
+#banner {
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    object-fit: cover;
+}
+
+.centers {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#searchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: auto;
+    font-size: inherit;
+    position: relative;
+}
+
+label {
+    text-align: left;
+    width: 100%;
+}
+
+#inputUrl {
+    width: 100%;
+    font-size: inherit;
+    margin-bottom: 10px;
+}
+
+#submitButton {
+    margin: 0;
+    background-color: #333;
+    color: #fff;
+    font-family: 'Giants-Bold';
+    font-size: 20px;
+    width: 80%;
+    height: 100%;
+}
+
+/* Animation effects */
+@keyframes loadingAnimation {
+    0% {
+        left: 0;
+        width: 0;
+    }
+    100% {
+        left: 0;
+        width: 100%;
+    }
+}
+
+@keyframes loading-text-opacity {
+    0% { opacity: 0; }
+    20% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+#loading {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    animation: loadingAnimation 2s ease-in-out infinite;
+    display: inline-block;
+}
+
+#loadingText {
+    font-size: 20px;
+    color: #333;
+    animation: loading-text-opacity 2s ease-in-out infinite;
+    display: inline-block;
+    position: absolute;
+    bottom: 10px;
+    display: none;
+}
