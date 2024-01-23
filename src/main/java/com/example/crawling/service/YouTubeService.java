@@ -30,7 +30,7 @@ public class YouTubeService {
 
     public static String getVideoId(String videoUrl) {
         // 동영상 URL에서 동영상 ID 추출
-        String videoId = "";
+        String videoId = " ";
 
         // 쇼츠 영상인 경우
         if (videoUrl.contains("/shorts/")) {
