@@ -80,6 +80,7 @@
             color: #fff;
             border: 2px solid #fff;
         }
+
         tr.colored:nth-child(even){
             background-color:#f4f4f4;
             color:#000000;
@@ -97,73 +98,26 @@
         }
 
     </style>
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script type="text/javascript" src="/js/selectSort.js" defer></script>
-    <script>
-        function downloadComments() {
-            // 사용자에게 확인 대화 상자 표시
-            var userConfirmation = confirm('댓글 내용을 엑셀로 다운로드하시겠습니까?');
-            var comments = [];
-            $("#commentBody tr").each(function () {
-                var comment = {
-                    authorProfileImage: $(this).find('td:eq(0) img').attr('src'),
-                    authorDisplayName: $(this).find('td:eq(0) span').text(),
-                    textOriginal: $(this).find('td:eq(1)').text(),
-                    publishedAt: $(this).find('td:eq(2)').text(),
-                    likeCount: parseInt($(this).find('td:eq(3)').text(), 10)
-                };
-                comments.push(comment);
-            });
-            // 확인을 선택한 경우에만 서버에 AJAX 요청 보내기
-            if (userConfirmation) {
-                $.ajax({
-                    type: "POST",
-                    url: "download",
-                    contentType: "application/json", // Set content type
-                    data: JSON.stringify(comments), // Serialize data to JSON
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function(blob) {
-                        var link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = "comments.xlsx";
-                        link.click();
-                        console.log("다운로드 성공");
-                    },
-                    error: function (error) {
-                        console.error("다운로드 오류", error);
-                    }
-                });
-            }
-            else {
-                return false;
-            }
-        }
-    </script>
+    <script type ="text/javascript" src = "/js/download.js" defer></script>
 </head>
-
 <body>
 <div id="wrapper">
     <nav style="font-family: 'Giants-Bold', sans-serif;">
         <a href="/" id="logo">HOME</a>
-<!--        <div id="login-signup">-->
-<!--            <a id="login" href="#">로그인</a>-->
-<!--            <a id="signup" href="#">회원가입</a>-->
-<!--        </div>-->
     </nav>
     <p style="margin: 20px; padding: 10px; font-family: 'Giants-Bold', sans-serif; background-color:#d7e4bc; font-size:24pt" align="center">댓글 목록</p>
 
     <div class="container" id="commentTable" style="width: 80%; margin:0 auto;">
-        <div class = "container-header">
+        <div class="container-header">
             <select id="sort" name="sort" style="margin:10px">
                 <option value="basic">정렬기준</option>
                 <option value="time">최신순</option>
                 <option value="likeCount">좋아요</option>
             </select>
-            <form name = "download" action ="download" method="post">
-                <input type = "button" value = "액셀 다운로드" onclick="downloadComments()">
+            <form name="download" action="download" method="post">
+                <input type="button" value="액셀 다운로드" onclick="downloadComments()">
             </form>
         </div>
 
@@ -182,7 +136,7 @@
                 <th>좋아요</th>
             </tr>
             </thead>
-            <tbody id = "commentBody">
+            <tbody id="commentBody">
             <tr class="colored" th:each="comment : ${comment}">
                 <td>
                     <img th:src="${comment.authorProfileImageUrl}" />
