@@ -10,6 +10,9 @@ public class CommentInfo {
     private String publishedAt;
     private long likeCount;
 
+    public CommentInfo(){
+
+    }
     public CommentInfo(String authorProfileImageUrl, String authorDisplayName, String textOriginal, String publishedAt, long likeCount) {
         this.authorProfileImageUrl = authorProfileImageUrl;
         this.authorDisplayName = authorDisplayName;

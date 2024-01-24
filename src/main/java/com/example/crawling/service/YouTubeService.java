@@ -27,7 +27,6 @@ public class YouTubeService {
     private String apiKey;
     private static final String APPLICATION_NAME = "API code samples";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
     public static String getVideoId(String videoUrl) {
         // 동영상 URL에서 동영상 ID 추출
         String videoId = "";
@@ -96,7 +95,6 @@ public class YouTubeService {
             nextPageToken = response.getNextPageToken();
 
         } while (nextPageToken != null);
-
         return commentInfoList;
     }
 
