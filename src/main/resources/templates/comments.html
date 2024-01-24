@@ -107,11 +107,11 @@
             var comments = [];
             $("#commentBody tr").each(function () {
                 var comment = {
-                    authorProfileImageUrl: $(this).find('td:eq(0) img').text(),
+                    authorProfileImage: $(this).find('td:eq(0) img').attr('src'),
                     authorDisplayName: $(this).find('td:eq(0) span').text(),
                     textOriginal: $(this).find('td:eq(1)').text(),
                     publishedAt: $(this).find('td:eq(2)').text(),
-                    likeCount: $(this).find('td:eq(3)').text()
+                    likeCount: parseInt($(this).find('td:eq(3)').text(), 10)
                 };
                 comments.push(comment);
             });
@@ -120,19 +120,24 @@
                 $.ajax({
                     type: "POST",
                     url: "download",
-                    data: JSON.stringify(comments), // 폼 데이터 직렬화
-                    contentType: "application/json",
-                    success: function (response) {
-                        // 서버에서의 응답을 처리 (예: 다운로드 시작)
+                    contentType: "application/json", // Set content type
+                    data: JSON.stringify(comments), // Serialize data to JSON
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(blob) {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "comments.xlsx";
+                        link.click();
                         console.log("다운로드 성공");
                     },
                     error: function (error) {
-                        // 에러 처리
                         console.error("다운로드 오류", error);
                     }
                 });
             }
-            else{
+            else {
                 return false;
             }
         }
